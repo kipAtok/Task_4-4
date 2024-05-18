@@ -1,20 +1,142 @@
 <Window xmlns="https://github.com/avaloniaui"
+		xmlns:infrastructure="using:Task_4_4.Infrastructure"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Task_4_4.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" 
+		Width="800" 
+		Height="600"
         x:Class="Task_4_4.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Task_4_4">
+        Title="Task_4_4"
+		CanResize="False">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Grid ShowGridLines="True"
+		  RowDefinitions="90, *"
+		  ColumnDefinitions="*, 200">
 
+		<StackPanel Grid.Row="0"
+					Grid.Column="0"
+					Orientation="Horizontal"
+					VerticalAlignment="Center">
+
+			<Button VerticalAlignment="Stretch"
+					VerticalContentAlignment="Center"
+					Background="White">
+				Home
+			</Button>
+
+			<Button VerticalAlignment="Stretch"
+					VerticalContentAlignment="Center"
+					Background="White">
+				About
+			</Button>
+
+			<ComboBox SelectedIndex="0"
+					  MaxDropDownHeight="60">
+				<ComboBoxItem>Blog's main topic 1</ComboBoxItem>
+				<ComboBoxItem>Blog's main topic 2</ComboBoxItem>
+				<ComboBoxItem>Blog's main topic 3</ComboBoxItem>
+			</ComboBox>
+
+			<ListBox Background="White">
+				<ListBoxItem>Associated blog 1</ListBoxItem>
+				<ListBoxItem>Associated blog 2</ListBoxItem>
+				<ListBoxItem>Associated blog 3</ListBoxItem>
+				<ListBoxItem>Associated blog 4</ListBoxItem>
+			</ListBox>
+
+		</StackPanel>
+
+		<StackPanel Grid.Row="0"
+					Grid.Column="1"
+					Orientation="Horizontal"
+					HorizontalAlignment="Right">
+
+			<Button VerticalAlignment="Stretch"
+					VerticalContentAlignment="Center"
+					Background="White">
+				RSS
+			</Button>
+
+		</StackPanel>
+
+		<ListBox Grid.Row="1"
+				 Grid.Column="0"
+				 ItemsSource="{Binding BlogEntities}"
+				 Background="White">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Margin="0, 0, 40, 0">
+
+						<TextBlock Text="{Binding Article}"
+								   Height="20">
+						</TextBlock>
+
+						<TextBlock Text="{Binding Text}"
+								   TextWrapping="Wrap"
+								   Margin="0, 20, 0, 0">
+						</TextBlock>
+
+						<Image Source ="{Binding ImagePath, Converter={x:Static infrastructure:BitmapValueConverter.Instance}}">
+						</Image>
+
+						<Grid RowDefinitions="*"
+							  ColumnDefinitions="auto, *">
+
+							<ListBox Grid.Column="0"
+									 ItemsSource="{Binding Tags}"
+									 Background="White">
+							</ListBox>
+							
+							<TextBlock Grid.Column="1"
+									   HorizontalAlignment="Right">
+								Rate: 4/5
+							</TextBlock>
+
+						</Grid>
+
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<ListBox Grid.Row="1"
+				 Grid.Column="1"
+				 ItemsSource="{Binding NewsEntities}"
+				 Background="White">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+
+					<StackPanel Orientation="Vertical"
+								Margin="10, 40, 10, 0">
+
+					<TextBlock Text="{Binding Text}"
+							   TextWrapping="Wrap">
+					</TextBlock>
+
+					<TextBlock TextDecorations="Underline"
+							   HorizontalAlignment="Right">
+						More
+					</TextBlock>
+
+					<TextBlock Text="{Binding PublishDate}"
+							   HorizontalAlignment="Right"
+							   Margin="0, 20, 0, 0">
+					</TextBlock>
+
+					</StackPanel>
+						
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		
+	</Grid>
+	
 </Window>
